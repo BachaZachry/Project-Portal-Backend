@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #Rest Framework
     'rest_framework',
+    #App for handling user operations
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +58,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'projectPortal.urls'
+#Custom User
+AUTH_USER_MODEL = 'users.User'
 
 TEMPLATES = [
     {
