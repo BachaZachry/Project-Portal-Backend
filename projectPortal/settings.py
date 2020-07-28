@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'users',
     #App for handling student operations
     'students',
+    #App for handling promo operations
 ]
 
 MIDDLEWARE = [

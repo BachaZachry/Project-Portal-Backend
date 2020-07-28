@@ -14,7 +14,7 @@ class Promo(models.Model):
     cycle = models.CharField(max_length=50,choices=choiceset)
     year = models.CharField(max_length=50,choices=choiceyear)
     specialityName= models.CharField(max_length=50,blank=True,default='Main Branch')
-    description = models.TextField(blank=False)
+    description = models.TextField(blank=True,null=True)
     #Min team members in a team in a class
     minTeamMembers = models.IntegerField(default=4)
     #Max team members in a team in a class
