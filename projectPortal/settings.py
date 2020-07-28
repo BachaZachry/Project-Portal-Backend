@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'rest_framework',
     #App for handling user operations
     'users',
+    #App for handling student operations
+    'students',
 ]
 
 MIDDLEWARE = [
