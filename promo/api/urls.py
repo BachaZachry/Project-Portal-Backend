@@ -1,8 +1,8 @@
 from django.urls import path
 from django.conf.urls import url
-from .views import PromoAddApi,PromoModifyApi
+from .views import GetPromo,GetAllPromos
 
 urlpatterns = [
-    path('add/',PromoAddApi.as_view()),
-    url(r'^setup/(?P<pk>\d+)/$',PromoModifyApi.as_view()),
+    path('promos/',GetAllPromos.as_view()),
+    url(r'^promos/(?P<pk>\d+)/$',GetPromo.as_view()),
 ]

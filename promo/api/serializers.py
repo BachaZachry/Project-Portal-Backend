@@ -6,7 +6,4 @@ from promo.models import Promo
 class PromoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Promo
-        fields = ['cycle','year','specialityName','description','minTeamMembers','maxTeamMembers','maxTeamsInProject']
-    def create(self, validated_data):
-        promo = Promo.objects.create(**validated_data)
-        return promo
+        fields = ['id','cycle','year','specialityName','description','minTeamMembers','maxTeamMembers','maxTeamsInProject']
