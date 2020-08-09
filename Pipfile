@@ -11,6 +11,8 @@ django = "*"
 django-environ = "*"
 djangorestframework = "*"
 psycopg2 = "*"
+django-filter = "*"
+django-crispy-forms = "*"
 
 [requires]
 python_version = "3.7"

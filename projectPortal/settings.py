@@ -48,7 +48,12 @@ INSTALLED_APPS = [
     #App for handling student operations
     'students',
     #App for handling promo operations
-    'promo'
+    'promo',
+    #App for handling Professor operations
+    'professors',
+    #Django Filters
+    'django_filters',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
