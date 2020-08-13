@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     #Django Filters
     'django_filters',
     'crispy_forms',
+    #Token Auth
+    'knox',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +71,15 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'projectPortal.urls'
 #Custom User
 AUTH_USER_MODEL = 'users.User'
+
+
+#DRF setup
+REST_FRAMEWORK= {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+            'knox.auth.TokenAuthentication',
+    ),
+}
+
 
 TEMPLATES = [
     {
