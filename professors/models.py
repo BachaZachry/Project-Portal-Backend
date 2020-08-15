@@ -10,10 +10,10 @@ class Professor(User):
         ('Pr','Pr'),
     )
     speciality = models.CharField(max_length=50,blank=True,default='')
-    grade = models.CharField(max_length=50,blank=False,choices=grades)
+    grade = models.CharField(max_length=50,blank=True,choices=grades,default=None)
 
     def __str__(self):
         if (self.grade == 'Pr'):
-            return 'Professor ' + self.lastName + ' ' + self.firstName
+            return 'Professor ' + self.last_name + ' ' + self.first_name
         else:
-            return 'Dr.' + self.lastName + ' ' + self.firstName
+            return 'Dr.' + self.last_name + ' ' + self.first_name
