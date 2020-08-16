@@ -1,4 +1,4 @@
-from students.models import Student
+from students.models import Student,Team
 from rest_framework import serializers
 
 
@@ -17,3 +17,8 @@ class StudentRegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = Student.objects.create_user(**validated_data)
         return user
+
+class TeamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Team
+        fields = ['name']
