@@ -23,5 +23,5 @@ urlpatterns = [
     path('promo/',include('promo.api.urls')),
     path('professor/',include('professors.api.urls')),
     path('student/',include('students.api.urls')),
-    path('docs/',include_docs_urls(title="Project Portal"))
+    path('docs/',include_docs_urls(title="Project Portal")),
 ]
