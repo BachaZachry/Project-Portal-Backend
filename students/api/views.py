@@ -1,9 +1,11 @@
-from .serializers import StudentSerializer,StudentRegisterSerializer,TeamSerializer
+from .serializers import StudentSerializer,StudentRegisterSerializer,TeamSerializer , \
+     InviteSerializer
 from rest_framework import generics,permissions
 from rest_framework.response import Response
 from django_filters import rest_framework as filters
 from students.models import Student
-from users.permissions import CanCreateTeamStudent
+from users.permissions import CanCreateTeamStudent,IsLeader
+from django.core.mail import send_mail
 
 
 #Get Student by id
@@ -65,4 +67,32 @@ class CreateTeam(generics.GenericAPIView):
             'Team Id':team.pk,
             'Team Name':team.name,
             'Team Leader Id':leader.id
+        })
+
+#Invite
+class InviteToTeam(generics.GenericAPIView):
+    serializer_class = InviteSerializer
+    permission_classes = [IsLeader]
+
+    def post(self,request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        #Creating the invite
+        invite = serializer.save()
+        #Notifying the receiver
+        '''
+                To send an email
+                Requires Conf on mail:Settings>Settings>Forwarding and POP/IMAP>Enable IMAP
+                Gmail Security>Allow Less Secure Apps>Activate
+                send_mail(
+                    'Invite Received',
+                    'You are invited to a team',
+                    'Admin Email',
+                    [receiver.email],
+                    fail_silently=False,
+                )
+                '''
+        return Response({
+            'Invite':InviteSerializer(invite,context=self.get_serializer_context()).data,
+            'Invite Id':invite.pk,
         })

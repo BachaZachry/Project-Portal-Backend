@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import User
 from promo.models import Promo
+from django.core.exceptions import ValidationError
 
 
 
@@ -30,4 +31,10 @@ class Invite(models.Model):
     )
     sender = models.ForeignKey(Student,on_delete=models.CASCADE,related_name='Sender')
     receiver = models.ForeignKey(Student,on_delete=models.CASCADE,related_name='Receiver')
-    status = models.CharField(max_length=1,choices=STATUS_CHOICES)
+    status = models.CharField(max_length=1,choices=STATUS_CHOICES,default='P')
+
+    def save(self,*args,**kwargs):
+        if (self.sender==self.receiver):
+            raise ValidationError("Sender can't invite himself")
+        else:
+            super(Invite,self).save(*args,**kwargs)

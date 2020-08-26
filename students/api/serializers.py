@@ -1,5 +1,6 @@
-from students.models import Student,Team
+from students.models import Student,Team,Invite
 from rest_framework import serializers
+from users.fields import CurrentStudent
 
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -22,3 +23,9 @@ class TeamSerializer(serializers.ModelSerializer):
     class Meta:
         model = Team
         fields = ['name']
+
+class InviteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Invite
+        fields = ['sender','receiver','status']
+        extra_kwargs = {'sender':{'default':CurrentStudent()}}
