@@ -1,9 +1,9 @@
 from .serializers import StudentSerializer,StudentRegisterSerializer,TeamSerializer , \
-     InviteSerializer
-from rest_framework import generics,permissions
+     InviteSerializer,InviteResponseSerializer
+from rest_framework import generics,permissions,mixins
 from rest_framework.response import Response
 from django_filters import rest_framework as filters
-from students.models import Student
+from students.models import Student,Invite,Team
 from users.permissions import CanCreateTeamStudent,IsLeader
 from django.core.mail import send_mail
 
@@ -48,6 +48,12 @@ class CreateTeam(generics.GenericAPIView):
     permission_classes = [CanCreateTeamStudent]
 
     def post(self,request):
+        '''
+        This API view serves to create a team,it requires a student who has no team to be able
+        to create a team.
+        Upon team creation,it will get the leader's (student who created) note as it's average note
+        '''
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         #Creating the team
@@ -75,6 +81,9 @@ class InviteToTeam(generics.GenericAPIView):
     permission_classes = [IsLeader]
 
     def post(self,request):
+        '''
+        This API view serves sending an invite
+        '''
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         #Creating the invite
@@ -96,3 +105,31 @@ class InviteToTeam(generics.GenericAPIView):
             'Invite':InviteSerializer(invite,context=self.get_serializer_context()).data,
             'Invite Id':invite.pk,
         })
+
+class RespondToAnInvitation(generics.RetrieveUpdateAPIView):
+    serializer_class = InviteSerializer
+    permission_classes = [CanCreateTeamStudent]
+    queryset = Invite.objects.all()
+
+    def get_queryset(self):
+        serializer = self.get_serializer()
+        receiver = serializer.context['request'].user.student
+        #Return only the invitations sent to that specific student
+        return Invite.objects.filter(receiver=receiver)
+
+    def put(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        if serializer.validated_data['status'] == 'A':
+            receiver = serializer.context['request'].user.student
+            sender_id = serializer.validated_data['sender']
+            sender = Student.objects.get(pk=sender_id)
+            #Adding to the team
+            receiver.team = sender.team
+            receiver.save()
+            #Modifying Team attributes
+            team = Team.objects.get(pk=receiver.team.pk)
+            team.number_of_members += 1
+            team.avg_note = (team.avg_note + receiver.note) / team.number_of_members
+            team.save()
+        return self.update(request,*args,**kwargs)

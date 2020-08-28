@@ -14,8 +14,8 @@ class IsProfessor(permissions.BasePermission):
 #Students who are able to create teams
 class CanCreateTeamStudent(permissions.BasePermission):
     def has_permission(self, request, view):
-        return request.user.student and request.user.is_authenticated and request.user.student.is_leader == False \
-            and request.user.student.team == None
+        return request.user.student and request.user.is_authenticated and request.user.student.team == None
+
 
 #Students who are able to invite to a team
 class IsLeader(permissions.BasePermission):

@@ -29,3 +29,9 @@ class InviteSerializer(serializers.ModelSerializer):
         model = Invite
         fields = ['sender','receiver','status']
         extra_kwargs = {'sender':{'default':CurrentStudent()}}
+
+
+class InviteResponseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Invite
+        fields = ['sender', 'receiver', 'status']

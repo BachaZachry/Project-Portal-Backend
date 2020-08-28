@@ -1,6 +1,7 @@
 from django.urls import path
 from django.conf.urls import url
-from .views import GetStudent,GetAllStudents,RegisterStudent,CreateTeam,InviteToTeam
+from .views import GetStudent,GetAllStudents,RegisterStudent,CreateTeam,InviteToTeam , \
+    RespondToAnInvitation
 
 urlpatterns = [
     path('student/',GetAllStudents.as_view()),
@@ -8,4 +9,5 @@ urlpatterns = [
     path('register/',RegisterStudent.as_view()),
     path('team/',CreateTeam.as_view()),
     path('invite/',InviteToTeam.as_view()),
+    url(r'^invite/(?P<pk>\d+)/$',RespondToAnInvitation.as_view()),
 ]
