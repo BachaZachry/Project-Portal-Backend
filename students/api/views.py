@@ -90,6 +90,8 @@ class InviteToTeam(generics.GenericAPIView):
         invite = serializer.save()
         #Notifying the receiver
         '''
+                PS:Only use this when the production environment is secured
+                To test in dev environment
                 To send an email
                 Requires Conf on mail:Settings>Settings>Forwarding and POP/IMAP>Enable IMAP
                 Gmail Security>Allow Less Secure Apps>Activate

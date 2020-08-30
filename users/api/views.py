@@ -1,5 +1,5 @@
 from rest_framework import generics,permissions
-from .serializers import LoginSerializer
+from .serializers import LoginSerializer,PasswordChangeSerializer
 from users.models import User
 from rest_framework.response import Response
 from knox.auth import AuthToken
@@ -37,3 +37,20 @@ class LoginApiView(generics.GenericAPIView):
             "userId":object.id,
             "Type":role
         })
+
+
+class ChangePassword(generics.GenericAPIView):
+    serializer_class = PasswordChangeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def patch(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.context['request'].user
+        #Check if the current password is correct
+        if user.check_password(serializer.validated_data['current_password']):
+            user.set_password(serializer.validated_data['new_password'])
+            user.save()
+        else:
+            raise ValueError('Incorrect Password')
+        return Response("Password Changed Successfully!")
