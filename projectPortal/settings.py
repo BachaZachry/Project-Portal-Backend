@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import environ
+from datetime import timedelta
 
 env = environ.Env()
 environ.Env.read_env()
@@ -80,7 +81,11 @@ REST_FRAMEWORK= {
     ),
     'DEFAULT_SCHEMA_CLASS':'rest_framework.schemas.coreapi.AutoSchema'
 }
-
+#Knox Setup
+REST_KNOX = {
+    'TOKEN_TTL':timedelta(hours=48),
+    'AUTO_REFRESH':True,
+}
 
 TEMPLATES = [
     {
