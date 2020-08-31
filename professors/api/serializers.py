@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from professors.models import Professor
+from professors.models import Professor,Project
+from users.fields import CurrentProfessor
 
 
 class ProfessorSerializer(serializers.ModelSerializer):
@@ -17,3 +18,10 @@ class ProfessorRegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = Professor.objects.create_user(**validated_data)
         return user
+
+class PFESerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Project
+        fields = ['promo','title','domain','tools','required_documents','document','professor','status']
+        extra_kwargs = {'professor':{'default':CurrentProfessor()}}

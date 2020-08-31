@@ -32,5 +32,5 @@ class Project(models.Model):
         ("P", "Pending"),
         ("R", "Rejected"),
     )
-    status = models.CharField(max_length=8,choices=STATUS_CHOICES)
+    status = models.CharField(max_length=8,choices=STATUS_CHOICES,default='P')
     promo = models.ForeignKey(Promo,on_delete=models.CASCADE)

@@ -1,8 +1,9 @@
-from .serializers import ProfessorSerializer,ProfessorRegisterSerializer
+from .serializers import ProfessorSerializer,ProfessorRegisterSerializer,PFESerializer
 from rest_framework import generics,permissions
 from rest_framework.response import Response
 from django_filters import rest_framework as filters
 from professors.models import Professor
+from users.permissions import IsProfessor
 
 
 #Get Professor by id
@@ -38,3 +39,7 @@ class RegisterProfessor(generics.GenericAPIView):
             "Professor":ProfessorRegisterSerializer(professor,context=self.get_serializer_context()).data,
             "Id":professor.id
         })
+
+class ProjectSubmission(generics.CreateAPIView):
+    serializer_class = PFESerializer
+    permission_classes = [IsProfessor]
