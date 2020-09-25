@@ -57,9 +57,12 @@ INSTALLED_APPS = [
     'crispy_forms',
     #Token Auth
     'knox',
+    #Debug
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -86,6 +89,12 @@ REST_KNOX = {
     'TOKEN_TTL':timedelta(hours=48),
     'AUTO_REFRESH':True,
 }
+
+#Debug IP's
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
 
 TEMPLATES = [
     {

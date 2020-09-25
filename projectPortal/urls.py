@@ -27,3 +27,10 @@ urlpatterns = [
     path('student/',include('students.api.urls')),
     path('docs/',include_docs_urls(title="Project Portal")),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        path('debug/',include(debug_toolbar.urls)),
+    ]
+
