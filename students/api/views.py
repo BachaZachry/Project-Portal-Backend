@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from django_filters import rest_framework as filters
 from students.models import Student,Invite,Team
 from users.permissions import CanCreateTeamStudent,IsLeader
+from django.db.models import F
 from django.core.mail import send_mail
 
 
@@ -65,14 +66,14 @@ class CreateTeam(generics.GenericAPIView):
         leader.is_leader = True
         leader.save()
         #Initializing team note and number of members
-        team.avg_note = leader.note
+        team.avg_note =  leader.note
         team.number_of_members = 1
         #Saving the changes
         team.save()
         return Response({
             'Team Id':team.pk,
             'Team Name':team.name,
-            'Team Leader Id':leader.id
+            'Team Leader Id':leader.id,
         })
 
 #Invite

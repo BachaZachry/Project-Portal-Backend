@@ -1,8 +1,9 @@
-from .serializers import ProfessorSerializer,ProfessorRegisterSerializer,PFESerializer
+from .serializers import ProfessorSerializer,ProfessorRegisterSerializer,PFESerializer \
+    ,ProjectUpdateSerializer
 from rest_framework import generics,permissions
 from rest_framework.response import Response
 from django_filters import rest_framework as filters
-from professors.models import Professor
+from professors.models import Professor,Project
 from users.permissions import IsProfessor
 
 
@@ -43,3 +44,23 @@ class RegisterProfessor(generics.GenericAPIView):
 class ProjectSubmission(generics.CreateAPIView):
     serializer_class = PFESerializer
     permission_classes = [IsProfessor]
+
+
+class ProjectUpdateDelete(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ProjectUpdateSerializer
+    permission_classes = [IsProfessor]
+    queryset = Project.objects.all()
+
+    def get_queryset(self):
+        '''A teacher can modify or delete only the projects he submitted'''
+        serializer = self.get_serializer()
+        professor = serializer.context['request'].user.professor
+        return Project.objects.filter(professor=professor)
+
+class ProjectEvaluation(generics.RetrieveUpdateAPIView):
+    serializer_class = PFESerializer
+    permission_classes = [permissions.IsAdminUser]
+    queryset = Project.objects.all()
+
+
+

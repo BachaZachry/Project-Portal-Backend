@@ -25,3 +25,8 @@ class PFESerializer(serializers.ModelSerializer):
         model = Project
         fields = ['promo','title','domain','tools','required_documents','document','professor','status']
         extra_kwargs = {'professor':{'default':CurrentProfessor()}}
+
+class ProjectUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ['promo','title','domain','tools','required_documents','document']
