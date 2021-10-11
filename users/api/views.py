@@ -1,5 +1,5 @@
 from rest_framework import generics, permissions
-from .serializers import LoginSerializer, PasswordChangeSerializer, TestSerializer
+from .serializers import LoginSerializer, PasswordChangeSerializer
 from users.models import User
 from rest_framework.response import Response
 from django.db import connection

@@ -19,6 +19,7 @@ xlrd = "*"
 pyexcel-xls = "*"
 pytest-django = "*"
 pytest-cov = "*"
+factory-boy = "*"
 
 [requires]
 python_version = "3.7"
