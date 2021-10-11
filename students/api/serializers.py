@@ -3,6 +3,7 @@ from rest_framework import serializers
 from users.fields import CurrentStudent
 
 
+
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
@@ -35,3 +36,9 @@ class InviteResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Invite
         fields = ['sender', 'receiver', 'status']
+
+class BulkCreateSerializer(serializers.ModelSerializer):
+    xls_file = serializers.FileField()
+    class Meta:
+        model = Student
+        fields = ['promo','xls_file']

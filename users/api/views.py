@@ -1,8 +1,10 @@
-from rest_framework import generics,permissions
-from .serializers import LoginSerializer,PasswordChangeSerializer
+from rest_framework import generics, permissions
+from .serializers import LoginSerializer, PasswordChangeSerializer, TestSerializer
 from users.models import User
 from rest_framework.response import Response
+from django.db import connection
 from knox.auth import AuthToken
+
 
 class LoginApiView(generics.GenericAPIView):
     serializer_class = LoginSerializer
@@ -25,17 +27,17 @@ class LoginApiView(generics.GenericAPIView):
         user = serializer.validated_data
         token = AuthToken.objects.create(user)[1]
         object = User.objects.get(email=user.email)
-        #Recognize whether it's a student,professor or admin that logged in
+        # Recognize whether it's a student,professor or admin that logged in
         if object.is_staff == True:
-            role = 0
-        elif hasattr(object,'student')==True:
-            role = 1
+            role = "admin"
+        elif hasattr(object, 'student') == True:
+            role = "student"
         else:
-            role = 2
+            role = "professor"
         return Response({
-            "token":token,
-            "userId":object.id,
-            "Type":role
+            "token": token,
+            "userId": object.id,
+            "Type": role
         })
 
 
@@ -47,7 +49,7 @@ class ChangePassword(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.context['request'].user
-        #Check if the current password is correct
+        # Check if the current password is correct
         if user.check_password(serializer.validated_data['current_password']):
             user.set_password(serializer.validated_data['new_password'])
             user.save()

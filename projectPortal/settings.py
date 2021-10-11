@@ -59,6 +59,8 @@ INSTALLED_APPS = [
     'knox',
     #Debug
     'debug_toolbar',
+    #Read XLS Files
+    'pyexcel_xls'
 ]
 
 MIDDLEWARE = [
@@ -111,6 +113,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'projectPortal.wsgi.application'
 

@@ -1,5 +1,5 @@
 from .serializers import StudentSerializer,StudentRegisterSerializer,TeamSerializer , \
-     InviteSerializer,InviteResponseSerializer
+     InviteSerializer,InviteResponseSerializer,BulkCreateSerializer
 from rest_framework import generics,permissions,mixins
 from rest_framework.response import Response
 from django_filters import rest_framework as filters
@@ -7,6 +7,8 @@ from students.models import Student,Invite,Team
 from users.permissions import CanCreateTeamStudent,IsLeader
 from django.db.models import F
 from django.core.mail import send_mail
+from pyexcel_xls import get_data
+from promo.models import Promo
 
 
 #Get Student by id
@@ -28,6 +30,9 @@ class GetAllStudents(generics.ListAPIView):
     queryset = Student.objects.all()
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = StudentFilter
+
+
+
 
 #Register as a student
 class RegisterStudent(generics.GenericAPIView):
@@ -136,3 +141,25 @@ class RespondToAnInvitation(generics.RetrieveUpdateAPIView):
             team.avg_note = (team.avg_note + receiver.note) / team.number_of_members
             team.save()
         return self.update(request,*args,**kwargs)
+
+
+class BulkCreateStudent(generics.GenericAPIView):
+    serializer_class = BulkCreateSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def post(self,request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        file = serializer.validated_data['xls_file']
+        data = get_data(file)
+        promo = serializer.validated_data['promo']
+        for i in range(1,len(data['Sheet1'])):
+            first_name = data['Sheet1'][i][0].lower()
+            last_name = data['Sheet1'][i][1].lower()
+            note = data['Sheet1'][i][2]
+            email = last_name[0] + '.' + first_name + '@esi-sba.dz'
+            password = 'testinginprogress1'
+            Student.objects.create_user(email=email,password=password,first_name=first_name,last_name=last_name,note=note,promo=promo)
+        return Response({
+            'Done':'Yes'
+        })
