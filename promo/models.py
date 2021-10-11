@@ -28,10 +28,13 @@ class Promo(models.Model):
         unique_together = ('year', 'cycle')
 
     def save(self, *args, **kwargs):
-        if not (self.cycle == "CPI" and self.year == "3rd"):
+        if not ((self.cycle == "CPI" and self.year == "3rd") or (self.minTeamMembers > self.maxTeamMembers)):
             super(Promo, self).save(*args, **kwargs)
-        else:
+        elif ((self.cycle == "CPI" and self.year == "3rd")):
             raise ValidationError("3rd Year CPI doesn't exist.")
+        else:
+            raise ValidationError(
+                "minTeamMembers must be less or equal than the max")
 
     def __str__(self):
         return self.year + 'year' + self.cycle + self.specialityName

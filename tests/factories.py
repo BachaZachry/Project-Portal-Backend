@@ -25,8 +25,14 @@ class PromoFactory(factory.django.DjangoModelFactory):
         except ValidationError:
             pass
     specialityName = factory.Faker('name')
-    minTeamMembers = factory.Faker('random_digit')
-    maxTeamMembers = factory.Faker('random_digit')
+    while True:
+        try:
+            minTeamMembers = factory.Faker('random_digit')
+            maxTeamMembers = factory.Faker('random_digit')
+            if (minTeamMembers <= maxTeamMembers):
+                break
+        except ValidationError:
+            pass
     maxTeamsInProject = factory.Faker('random_digit')
 
 
