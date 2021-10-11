@@ -17,6 +17,8 @@ django-crispy-forms = "*"
 django-rest-knox = "*"
 xlrd = "*"
 pyexcel-xls = "*"
+pytest-django = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.7"

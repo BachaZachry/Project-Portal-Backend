@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy
 
 
 class UserManager(BaseUserManager):
@@ -40,7 +40,7 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     # Make email field the username field
     username = None
-    email = models.EmailField(_('email address'), unique=True)
+    email = models.EmailField(gettext_lazy('email address'), unique=True)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
