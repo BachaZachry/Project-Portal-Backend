@@ -21,11 +21,11 @@ Project portal is an academic platform for teachers and students, allowing proje
 ````
  - pipenv install
  - Create .env file in projectPortal following .env.example
- - python manage.py makemigrations
- - python manage.py migrate
+ - pipenv run python manage.py makemigrations
+ - pipenv run python manage.py migrate
 ````
 ### Running The Back-end
-``python manage.py runserver``
+``pipenv run python manage.py runserver``
 
 ## Documentation
 
