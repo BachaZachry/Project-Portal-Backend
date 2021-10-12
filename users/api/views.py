@@ -16,10 +16,10 @@ class LoginApiView(generics.GenericAPIView):
         A simple login api,it is used for both students and teachers
         :param request: POST
         :param args: None
-        :param kwargs: username : String + E-mail : String (runs validation if it's an e-mail form) + password
+        :param kwargs: E-mail : String (runs validation if it's an e-mail form) + password
         :return: Token : String
                 Id : String
-                Role: Integer (0: admin,1: student,2: professor)
+                Role: admin, student or professor)
         in case of error it returns "Incorrect Credentials" .
         '''
         serializer = self.get_serializer(data=request.data)

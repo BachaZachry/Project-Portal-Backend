@@ -25,14 +25,8 @@ class PromoFactory(factory.django.DjangoModelFactory):
         except ValidationError:
             pass
     specialityName = factory.Faker('name')
-    while True:
-        try:
-            minTeamMembers = factory.Faker('random_digit')
-            maxTeamMembers = factory.Faker('random_digit')
-            if (minTeamMembers <= maxTeamMembers):
-                break
-        except ValidationError:
-            pass
+    minTeamMembers = fuzzy.FuzzyInteger(low=1, high=4)
+    maxTeamMembers = fuzzy.FuzzyInteger(low=4, high=8)
     maxTeamsInProject = factory.Faker('random_digit')
 
 
@@ -46,6 +40,7 @@ class StudentFactory(factory.django.DjangoModelFactory):
     last_name = factory.Faker('last_name')
     promo = factory.SubFactory(PromoFactory)
     note = factory.Faker('random_digit')
+    is_active = True
 
 
 class ProfessorFactory(factory.django.DjangoModelFactory):
