@@ -1,16 +1,9 @@
-import factory
 from knox.models import AuthToken
 import pytest
-from rest_framework.test import APIClient
-from professors.models import Professor
-from students.models import Student
-
 from tests.factories import ProfessorFactory, StudentFactory
-from datetime import timedelta
 
 
 class TestUserEndpoints:
-    endpoint = '/users/login/'
 
     @pytest.mark.django_db
     def test_login_student(self, api_client):
