@@ -52,6 +52,17 @@ class TestUserEndpoints:
         cli.credentials(HTTP_AUTHORIZATION='Token %s' % token)
         response = cli.patch('/users/changepassword/',
                              data=expected_request_json)
-        print(response)
-        print(response.json())
         assert response.status_code == 200
+
+    @pytest.mark.django_db
+    def test_unauthorized_modify_password(self, api_client):
+        current_pass = 'pi3.1415'
+        new_pass = 'newpassword234'
+        expected_request_json = {
+            'current_password': current_pass,
+            'new_password': new_pass
+        }
+        cli = api_client()
+        response = cli.patch('/users/changepassword/',
+                             data=expected_request_json)
+        assert response.status_code == 401

@@ -17,13 +17,10 @@ class PromoFactory(factory.django.DjangoModelFactory):
         model = models.Promo
 
     while True:
-        try:
-            cycle = fuzzy.FuzzyChoice(PROMO_CYCLE)
-            year = fuzzy.FuzzyChoice(PROMO_YEAR)
-            if not (cycle == 'CPI' and year == "3rd"):
-                break
-        except ValidationError:
-            pass
+        cycle = fuzzy.FuzzyChoice(PROMO_CYCLE)
+        year = fuzzy.FuzzyChoice(PROMO_YEAR)
+        if not (cycle == 'CPI' and year == "3rd"):
+            break
     specialityName = factory.Faker('name')
     minTeamMembers = fuzzy.FuzzyInteger(low=1, high=4)
     maxTeamMembers = fuzzy.FuzzyInteger(low=4, high=8)
