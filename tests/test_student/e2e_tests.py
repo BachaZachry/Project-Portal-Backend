@@ -1,7 +1,9 @@
+import factory
 from factory.base import StubFactory
+from knox.models import AuthToken
 import pytest
 from promo.models import Promo
-from students.models import Student
+from students.models import Student, Team
 from tests.factories import PromoFactory, StudentFactory
 
 
@@ -23,3 +25,19 @@ class TestStudentEndpoints:
         print(response.json())
         assert response.status_code == 200
         assert Student.objects.all().count() == 1
+
+    @pytest.mark.django_db
+    def test_team_creation(self, api_client):
+        leader = StudentFactory()
+        team_name = factory.Faker('first_name')
+        token = AuthToken.objects.create(user=leader)[1]
+        cli = api_client()
+        cli.credentials(HTTP_AUTHORIZATION='Token %s' % token)
+
+        response = cli.post('/student/team/', data={'name': team_name})
+        print(response.json())
+        print(response)
+
+        assert response.status_code == 200
+        assert Team.objects.all().count() == 1
+        assert response.json().get('Team Leader Id') == leader.id
