@@ -26,11 +26,11 @@ class LoginApiView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data
         token = AuthToken.objects.create(user)[1]
-        object = User.objects.get(email=user.email)
+        loggedin_user = User.objects.get(email=user.email)
         # Recognize whether it's a student,professor or admin that logged in
-        if object.is_staff == True:
+        if loggedin_user.is_staff is True:
             role = "admin"
-        elif hasattr(object, 'student') == True:
+        elif hasattr(loggedin_user, 'student') is True:
             role = "student"
         else:
             role = "professor"
