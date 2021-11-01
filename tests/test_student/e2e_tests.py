@@ -41,3 +41,20 @@ class TestStudentEndpoints:
         assert response.status_code == 200
         assert Team.objects.all().count() == 1
         assert response.json().get('Team Leader Id') == leader.id
+
+    @pytest.mark.django_db
+    def test_unauthorized_team_creation(self, api_client):
+        leader = StudentFactory()
+        team = Team.objects.create(name="test")
+        leader.team = team
+        leader.save()
+        team_name = factory.Faker('first_name')
+        token = AuthToken.objects.create(user=leader)[1]
+        cli = api_client()
+        cli.credentials(HTTP_AUTHORIZATION='Token %s' % token)
+
+        response = cli.post('/student/team/', data={'name': team_name})
+        print(response.json())
+        print(response)
+
+        assert response.status_code == 403
